@@ -19,6 +19,9 @@ public class Dagma{
 	 * the total number of species living among all of the wetlands
 	 */
 	private ArrayList<Specie> species = new ArrayList<Specie>();
+	/**
+	 * all of the species registered
+	 */
 	private int regSpecies = 0;
 	/**
 	 * builder for Dagma
@@ -37,7 +40,7 @@ public class Dagma{
 	 * @param zoneType
 	 * @param percentageCompleted
 	 */
-	public void RegisterWetland(String name, String location, String size, int type, String photoUrl, boolean protectedStatus, String zoneName, int zoneType, double percentageCompleted, int numMaintenance) {
+	public void RegisterWetland(String name, String location, double size, int type, String photoUrl, boolean protectedStatus, String zoneName, int zoneType, double percentage) {
 		WetlandType wType = null;
 		WetlandLocation wLocation = null;
 		switch (type){
@@ -56,9 +59,13 @@ public class Dagma{
 				wLocation = WetlandLocation.RURAL;
 				break;
 		}
-		wetlands[FindFirstEmptyWetland()] = new Wetland(name, location, size, wType, photoUrl, protectedStatus, zoneName, wLocation, percentageCompleted, numMaintenance);
+		wetlands[FindFirstEmptyWetland()] = new Wetland(name, location, size, wType, photoUrl, protectedStatus, zoneName, wLocation, percentage);
 		regWetlands++;
 	}
+	/**
+	 * returns the maximum amount of wetlands thatr can be registered
+	 * @return
+	 */
 	public int getMAX_WETLANDS(){	
 		return MAX_WETLANDS;
 	}
@@ -75,7 +82,7 @@ public class Dagma{
 		SpecieType spType = null;
 		SpecificType spcType = null;
 		for (int counter=0; counter<newWetland.size(); counter++){
-			newWetlands[counter] = getWetland(newWetland.get(counter));
+			newWetlands[counter] = wetlands[newWetland.get(counter)];
 		}
 		switch (type){
 			case (1):
@@ -118,8 +125,23 @@ public class Dagma{
 	 * @param price
 	 * @param date
 	 */
-	public void RegisterEvent(int index, String type, String organizer, String description, double price, String date){
-		wetlands[index].RegisterEvent(type, organizer, description, price, date);
+	public void RegisterEvent(int index, int type, String organizer, String description, double price, String date){
+		model.EventType eType = null;
+		switch (type){
+			case (1):
+				eType = model.EventType.MAINTENANCE;
+				break;
+			case (2):
+				eType = model.EventType.SCHOOL_VISIT;
+				break;
+			case (3):
+				eType = model.EventType.BETTERING_ACTIVITIES;
+				break;
+			case (4):
+				eType = model.EventType.CELEBRATIONS;
+				break;
+		}
+		wetlands[index].RegisterEvent(new Event(eType, organizer, price, description, date));
 	}
 	/**
 	 * Looks for the wetland with the least ammount of species in it
@@ -149,7 +171,10 @@ public class Dagma{
 		}
 		return wetlands[maxIndex].getName();
 	}
-
+	/**
+	 * returns the amount of registered wetlands
+	 * @return regWetlands
+	 */
 	public int getRegWetlands(){
 		return regWetlands;
 	}
@@ -162,13 +187,18 @@ public class Dagma{
 		species.get(specieIndex).NewHabitat(wetlands[wetlandIndex]);
 		wetlands[wetlandIndex].AssingSpecie(species.get(specieIndex));
 	}
-
-	public Wetland getWetland(int index){
-		return wetlands[index];
-	}
+	/**
+	 * returns the number of habitats a specie is in
+	 * @param index
+	 * @return teh number of wetlands the specie inhabits
+	 */
 	public int getNumHabitats(int index){
 		return species.get(index).getNumWetlandsWhereIsFound();
 	}
+	/**
+	 * returns the ammount of species registered
+	 * @return teh number of species
+	 */
 	public int getNumSpecies(){
 		return species.size();
 	}
@@ -188,13 +218,26 @@ public class Dagma{
 	public String PrintAllSpecies(int index){
 		return species.get(index).toString();
 	}
-
-	public int getNumMaintenance(int index){
-		return wetlands[index].getNumMaintenance();
+	/**
+	 * fetches the number of maintenance a wetland gets per year
+	 * @param index
+	 * @return the number of maintenance per year
+	 */
+	public int getNumMaintenance(int index, int year){
+		return wetlands[index].getNumMaintenance(year);
 	}
+	/**
+	 * returns every wetland a certain specie is in
+	 * @param index
+	 * @return the wetlands
+	 */
 	public String getAllHabitats(int index){
 		return species.get(index).getHabitats();
 	}
+	/**
+	 * finds the first empty position in the array of wetlands
+	 * @return the index in the array that corresponds to the first empty position
+	 */
 	public int FindFirstEmptyWetland(){
 		int index = -1;
 		for(int counter=0; counter<MAX_WETLANDS&&index<0; counter++){
@@ -204,6 +247,10 @@ public class Dagma{
 		}
 		return index;
 	}
+	/**
+	 * shows every wetland that has been registered assingned to an index
+	 * @return the string with the wetlands
+	 */
 	public String DisplayWetlands(){
 		String message = "";
 		int enumeration = 1;
@@ -215,10 +262,15 @@ public class Dagma{
 		}
 		return message;
 	}
+	/**
+	 * Finds a wetland given the index that apears in the displayed menu
+	 * @param index
+	 * @return the index in the array of the wetland or -1 if the value is invalid
+	 */
 	public int FindWetlandIndexDisplay(int index){
-		int counter = 0, counter2 = 0;
-		if(index<=regWetlands){
-			while(counter<index-1){
+		int counter = 0, counter2 = -1;
+		if(index<=regWetlands&&index>=1){
+			while(counter<index){
 				counter2++;
 				if (wetlands[counter2]!=null){
 					counter++;
@@ -230,33 +282,39 @@ public class Dagma{
 		}
 		return counter2;
 	}
-	public int FindSpecieIndex(String specie){
-		int index = -1;
-		for (int counter=0; counter<species.size()&&index==-1; counter++){
-			if (specie.equals(species.get(counter).getName())){
-				index = counter;
-			}
-		}
-		return index;
-	}
+	/**
+	 * checks if a certain specie is in a certain wetland
+	 * @param wetlandIndex
+	 * @param specieIndex
+	 * @return a boolean that depends on the existance of the specie in the wetland
+	 */
 	public boolean IsSpecieInWetland(int wetlandIndex, int specieIndex){
 		return wetlands[wetlandIndex].isSpecieInHere(species.get(specieIndex));
 	}
+	/**
+	 * shows every specie that has been registered assingned to an index
+	 * @return the string with the species
+	 */
 	public String DisplaySpecies(){
 		String message = "";
 		int enumeration = 1;
 		for (int counter=0; counter<species.size(); counter++){
 			if (species.get(counter)!=null){
-				message += enumeration + "). " + species.get(counter).getName() + "\n";
+				message += enumeration + "). " + species.get(counter).getName() + "/" + species.get(counter).getScientificName() + "\n";
 				enumeration++;
 			}
 		}
 		return message;
 	}
+	/**
+	 * Finds a specie given the index that apears in the displayed menu
+	 * @param index
+	 * @return the index in the ArrayList of the species or -1 if the value is invalid
+	 */
 	public int FindSpecieIndexDisplay(int index){
-		int counter = 0, counter2 = 0;
-		if(index<=regSpecies){
-			while(counter<index-1){
+		int counter = 0, counter2 = -1;
+		if(index<=regSpecies&&counter>=1){
+			while(counter<index){
 				counter2++;
 				if (species.get(counter2)!=null){
 					counter++;

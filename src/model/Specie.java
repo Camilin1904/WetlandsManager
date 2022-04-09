@@ -49,6 +49,10 @@ public class Specie {
 	public String getName() {
 		return this.name;
 	}
+	
+	public String getScientificName(){
+		return scientificName;
+	}
 
 	/**
 	 * Adds a new wetland to the congloperate of wetlands that the specie inhabits
@@ -57,10 +61,16 @@ public class Specie {
 	public void NewHabitat(Wetland newWetland){
 		wetlandsWhereIsFound.add(newWetland);
 	}
-	public SpecieType gType(){
+	/**
+	 * returns the type pf the specie
+	 */
+	public SpecieType getType(){	
 		return type;
 	}
-
+	/**
+	 * returns all of the wetlands teh specie is found
+	 * @return a String with the name of the wetlands
+	 */
 	public String getHabitats(){
 		String message = "";
 		for (int counter=0; counter<wetlandsWhereIsFound.size(); counter++){
@@ -68,9 +78,16 @@ public class Specie {
 		}
 		return message;
 	}
+	/**
+	 * returns the ammount of habitatas
+	 * @return wetlandsWhereIsFound-size()
+	 */
 	public int getNumWetlandsWhereIsFound(){
 		return wetlandsWhereIsFound.size();
 	}
+	/**
+	 * returns a string with all of the information of a specie
+	 */
 	public String toString(){
 		return ("Name : " + name + "\n Scientific name: " + scientificName + "\nMigratory status: " + migratoryStatus + "\nType: " + type + " " + sType + "\nHabitats: " + getHabitats() + "\n");
 	}

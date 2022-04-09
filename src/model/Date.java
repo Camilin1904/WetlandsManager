@@ -24,6 +24,9 @@ public class Date {
 		month = Integer.parseInt(date.substring(3,5));
 		year = Integer.parseInt(date.substring(6));
 	}
+	/**
+	 * Returns the date with the format dd/mm/yyyy
+	 */
 	public String toString(){
 		return day + "/" + month + "/" + year;
 	}

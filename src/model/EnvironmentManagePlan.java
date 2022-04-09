@@ -20,12 +20,23 @@ public class EnvironmentManagePlan {
 		this.percentageCompleted = percentageCompleted;
 		this.numMaintenance = numMaintenance;
 	}
+	/**
+	 * get
+	 * @return percentageCompleted
+	 */
 	public double getPercentageCompleted() {
 		return this.percentageCompleted;
 	}
+	/**
+	 * get
+	 * @return numMaintenance
+	 */
 	public int getNumMaintenance() {
 		return this.numMaintenance;
 	}
+	/**
+	 * returns all of the data about the environment manage plan
+	 */
 	public String toString(){
 		return "the percentage of the environment manage plan completed is:" + percentageCompleted + "the cuantity of maintenance a year is: " + numMaintenance;
 	}

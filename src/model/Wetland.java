@@ -16,7 +16,7 @@ public class Wetland{
 	/**
 	 * The size of the wetland in m^2
 	 */
-	private String size;
+	private double size;
 	/**
 	 * the type of the wetland
 	 */
@@ -44,7 +44,7 @@ public class Wetland{
 	/**
 	 * how advanced the envirnment manage plan is
 	 */
-	private EnvironmentManagePlan maintenance;
+	private double percentageManagePlan;
 	/**
 	 * the events being planned in the wetland
 	 */
@@ -57,7 +57,7 @@ public class Wetland{
 		return this.name;
 	}
 
-	/**
+	/**	
 	 * Builder for Wetland
 	 * @param name
 	 * @param location
@@ -68,8 +68,7 @@ public class Wetland{
 	 * @param zoneName
 	 * @param zoneType
 	 */
-	public Wetland(String name, String location, String size, WetlandType type, String photoUrl, boolean protectedStatus, String zoneName, WetlandLocation zoneType, double percentageCompleted, int numMaintenance) {
-		maintenance = new EnvironmentManagePlan(percentageCompleted, numMaintenance);
+	public Wetland(String name, String location, double size, WetlandType type, String photoUrl, boolean protectedStatus, String zoneName, WetlandLocation zoneType, double percentage){
 		this.name =  name;	
 		this.location = location;
 		this.size = size;
@@ -78,17 +77,21 @@ public class Wetland{
 		this.protectedStatus = protectedStatus;
 		this.zoneName = zoneName;
 		this.zoneType = zoneType;
+		percentageManagePlan = percentage;
 		speciesFound = new ArrayList<Specie>();
 	}
 
 	/**
-	 * Assings a new specie to teh ones found in the wetland
+	 * Assings a new specie to the ones found in the wetland
 	 * @param specie
 	 */
 	public void AssingSpecie(Specie specie){
 		speciesFound.add(specie);
 	}
-
+	/**
+	 * retuns all of the species of the wetland
+	 * @return a String with the names of the species
+	 */
 	public String getSpeciesAssigned(){
 		String message = "";
 		for (int counter=0; counter<speciesFound.size(); counter++){
@@ -104,31 +107,55 @@ public class Wetland{
 	 * @param price
 	 * @param date
 	 */
-	public void RegisterEvent(String type, String organizer, String description, double price, String date){
-		events.add(new Event(type, organizer, price, description, date));
+	public void RegisterEvent(Event event){
+		events.add(event);
 	}
-
+	/**
+	 * returns the amount of flora pecies there are in the wetland
+	 * @return the amount of flora
+	 */
 	public int getNumFlora(){
 		int size = 0;
 		for (int counter=0; counter<speciesFound.size(); counter++){
-			if(speciesFound.get(counter).gType().equals(SpecieType.FLORA)){
+			if(speciesFound.get(counter).getType().equals(SpecieType.FLORA)){
 				size++;
 			}
 		}
 		return size;
 	}
+	/**
+	 * retunrs teh num of fauna species there are in the wetland
+	 * @return the amount of fauna
+	 */
 	public int getNumFauna(){
 		int size = 0;
 		for (int counter=0; counter<speciesFound.size(); counter++){
-			if(speciesFound.get(counter).gType().equals(SpecieType.FAUNA)){
+			if(speciesFound.get(counter).getType().equals(SpecieType.FAUNA)){
 				size++;
 			}
 		}
 		return size;
 	}
-	public int getNumMaintenance(){
-		return maintenance.getNumMaintenance();
+	/**
+	 * returns teh number of maintenance a wetland gets per year
+	 * @return teh number of maintenance
+	 */
+	public int getNumMaintenance(int year){
+		int NumMaintenance = 0;
+		for (int counter=0; counter<events.size(); counter++){
+			if(events.get(counter).getType().equals(model.EventType.MAINTENANCE)){
+				if (events.get(counter).getDate().substring(5).equals(year+"")){
+					NumMaintenance++;
+				}
+			}
+		}
+		return NumMaintenance;
 	}
+	/**
+	 * checks if a specie is in the wetland
+	 * @param specie
+	 * @return a boolean referencin gthe existance of the specie in teh wetland
+	 */
 	public boolean isSpecieInHere(Specie specie){
 		boolean check = false;
 		for(int counter=0; counter<speciesFound.size(); counter++){
@@ -138,6 +165,10 @@ public class Wetland{
 		}
 		return check;
 	}
+	/**
+	 * retunrs a string with all of the information for all of the events
+	 * @return a mesage with the info
+	 */
 	public String getEvents(){
 		String message = "";
 		for (int counter=0; counter<events.size(); counter++){
@@ -145,8 +176,11 @@ public class Wetland{
 		}
 		return message;
 	}
+	/**
+	 * Returns all of the information for a wetland
+	 */
 	public String toString(){
-		return("Name: " + name + "\n" + "Location: " + location + "\n" +"Size: " + size + "m^2" + "\n" +"Type: " + type + "\n" + "Photo url: " + photoUrl + "\n" + "Protected status: " + protectedStatus + "\n" + "Zone name: " + zoneName + "\n" + "Zone type: " + zoneType + "\n" + "percentage completed out of the environment manage plan: " + maintenance.getPercentageCompleted() + "\n" + "The ammount of maintenance a year is: " + maintenance.getNumMaintenance() + "\n" + "The species living in this wetland are: " + getSpeciesAssigned() + "\n" + "The events are: " + getEvents());
+		return("Name: " + name + "\n" + "Location: " + location + "\n" +"Size: " + size + "m^2" + "\n" +"Type: " + type + "\n" + "Photo url: " + photoUrl + "\n" + "Protected status: " + protectedStatus + "\n" + "Zone name: " + zoneName + "\n" + "Zone type: " + zoneType + "\n" + "percentage completed out of the environment manage plan: " + percentageManagePlan + "%\n" + "The species living in this wetland are: " + getSpeciesAssigned() + "\n" + "The events are: " + getEvents());
 	}
 
 }
