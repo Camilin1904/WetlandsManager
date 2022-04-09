@@ -409,7 +409,7 @@ public class WetlandsManager {
         boolean checkMenu = true;
         String menu = "";
         do{
-            System.out.println("\n\nWhat would you like to do?\n1)Register a wetland\n2)Assing a Specie to a wetland\n3)Register a new event\n4)Cuantity of maintenance a year for a wetland\n5)Display the wetland with the least ammount of flora\n6)Wetlands where a specie is found\n7)Display all the information for all wetlands\n8)Display the wetland with most ammount of fauna\nN)Exit");
+            System.out.println("\n\nWhat would you like to do?\n1)Register a wetland\n2)Assing a Specie to a wetland\n3)Register a new event\n4)Cuantity of maintenance a year for a wetland\n5)Display the wetland with the least ammount of flora\n6)Wetlands where a specie is found\n7)Display all the information for all wetlands and all the species\n8)Display the wetland with most ammount of fauna\nN)Exit");
             menu = scan.next();
             menu = menu.toUpperCase();
             switch (menu){
