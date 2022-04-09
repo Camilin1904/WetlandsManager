@@ -257,10 +257,8 @@ public class WetlandsManager {
                     case ("2"):
                         System.out.println("Input the name of the specie");
                         name = scan.nextLine();
-                        scan.nextLine();
                         System.out.println("Input the scientific name of the specie");
                         scientificName = scan.nextLine();
-                        scan.nextLine();
                         do{
                             System.out.println("does the specie migrate?(yes or no)");
                             strmigratoryStatus = scan.next();
