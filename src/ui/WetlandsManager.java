@@ -15,22 +15,22 @@ public class WetlandsManager {
      */
     private Scanner scan = new Scanner(System.in);
     /**
-     * Looks for the wetland with the least species
+     * Looks for the wetland with the least species of flora
      */
-    private void  LeastPopulatedWetland(){
+    private void  LeastFloraWetland(){
         System.out.println(dagma.LeastFloraWetland());
     }
     /**
-     * Looks for the wetland with the most species
+     * Looks for the wetland with the most species of fauna
      */
-    private void  MostPopulatedWetland(){
+    private void  MostFaunaWetland(){
         System.out.println(dagma.MostFaunaWetland());
     }
     /**
      * Looks for the ammount of maintenance a given wetland recieves a year
      */
     private void NumMaintenance(){
-        int index, menu;
+        int index, menu, year;
         boolean check = true;
         do{
             System.out.println("Which Wetland: \n" + dagma.DisplayWetlands());
@@ -44,8 +44,14 @@ public class WetlandsManager {
                 System.out.println("non-existent wetland");
             }
         }while(check);
-        System.out.println("the amount of maintenace a year is: " + dagma.getNumMaintenance(index));
+        System.out.println("Input the year");
+        year = scan.nextInt();
+        System.out.println("the amount of maintenace that year is: " + dagma.getNumMaintenance(index, year));
     }
+    /**
+     * displays the wetlands and asks the user to pick one
+     * @returnthe index of teh wetland and -1 if the wetland was not found
+     */
     private int DisplayWetlands(){
         int index = 0, menu = 0;
         boolean check = true;
@@ -67,6 +73,10 @@ public class WetlandsManager {
         }while(check);
         return index;
     }
+    /**
+     * displays the species and asks the user to pick one
+     * @returnthe index of the specie and -1 if the specie was not found
+     */
     private int DisplaySpecies(){
         int index = 0, menu = 0;
         boolean check = true;
@@ -89,23 +99,32 @@ public class WetlandsManager {
         return index;
     }
     /**
-     * Returns the number of wetlands a specie inhabits
+     * Prints the number of wetlands a specie inhabits
      */
     private void WetlandsWhereSpecieIs(){
         int index = DisplaySpecies();
-        System.out.println("the wetlands whres the specie is are: " + dagma.getAllHabitats(index));
+        System.out.println("the wetlands the specie inhabits are: " + dagma.getAllHabitats(index));
     }
     /**
-     * Register an event for a givven wetland
+     * Register an event for a given wetland
      */
     private void RegisterEvent(){
-        String type = "", organizer = "", description = "", date = "";
+        String  organizer = "", description = "", date = "";
+        int type = 0, index = 0;
         double price = 0;
         boolean check = true;
-        int index = DisplayWetlands();
+        index = DisplayWetlands();
         if (index>=0){
-            System.out.println("\nInput the type of the event");
-            type = scan.nextLine();
+            do{
+                System.out.println("\nInput the type of the event: \n1). Maintenance \n2. School visit \n3). Bettering activities \n4). Celebrations");
+                type = scan.nextInt();  
+                if(type>=1&&type<=4){
+                    check = false;
+                }       
+                else{
+                    System.out.println("Invalid event");
+                }
+            }while(check);
             System.out.println("Input the name of the organizer");
             organizer = scan.nextLine();
             System.out.println("Input the price of the event");
@@ -125,23 +144,25 @@ public class WetlandsManager {
             }while(check);
             dagma.RegisterEvent(index, type, organizer, description, price, date);
         }
+        else{
+            System.out.println("invalid wetland");
+        }
     }
     /**
      * Registers a wetland into the database
      */
     private void RegisterWetland(){
         if(dagma.getRegWetlands()<dagma.getMAX_WETLANDS()){
-            int numMaintenace = 0, type = 0, zoneType = 0;
-            String name, location, size, photoUrl, strProtectedStatus, zoneName;
-            double percentage;
+            int type = 0, zoneType = 0;
+            String name, location, photoUrl, strProtectedStatus, zoneName;
             boolean protectedStatus=true, check=false;
-            scan.nextLine();
+            double percentage = 0, size = 0;
             System.out.println("Input the name of the Wetland");
             name = scan.nextLine();
             System.out.println("Input the location of the Wetland");
             location = scan.nextLine();
             System.out.println("Input the size of the Wetland");
-            size = scan.next();
+            size = scan.nextDouble();
             scan.nextLine();
             do{
                 System.out.println("Input the type: \n1). Public\n2). Private");
@@ -190,14 +211,13 @@ public class WetlandsManager {
             }while(check);
             System.out.println("Input the zone name where the Wetland is located(the name of the neighbourhood if its locates id an urban area, or the name of the municipality)");
             zoneName = scan.next();
+            if(protectedStatus){
+                System.out.println("Input the percentage of completion of the environment manage plan");
+                percentage = scan.nextDouble();
+            }
+
             scan.nextLine();
-            System.out.println("Input the percentage of completion of the environment manage plan of the wetland");
-            percentage = scan.nextDouble();
-            scan.nextLine();
-            System.out.println("Input the pcuantity of maintenance a year it has");
-            numMaintenace = scan.nextInt();
-            scan.nextLine();
-            dagma.RegisterWetland(name, location, size, type, photoUrl, protectedStatus, zoneName, zoneType, percentage, numMaintenace);
+            dagma.RegisterWetland(name, location, size, type, photoUrl, protectedStatus, zoneName, zoneType, percentage );
         }
         else{
             System.out.println("There is no space for more wetlands");
@@ -238,7 +258,7 @@ public class WetlandsManager {
                     scientificName = scan.nextLine();
                     scan.nextLine();
                     do{
-                        System.out.println("does the specie migrate(yes or no)");
+                        System.out.println("does the specie migrate?(yes or no)");
                         strmigratoryStatus = scan.next();
                         scan.nextLine();
                         strmigratoryStatus.toLowerCase();
@@ -385,7 +405,7 @@ public class WetlandsManager {
                     NumMaintenance();
                     break;
                 case ("5"):
-                    LeastPopulatedWetland();
+                    LeastFloraWetland();
                     break;
                 case ("6"):
                     WetlandsWhereSpecieIs();
@@ -394,7 +414,7 @@ public class WetlandsManager {
                     InfoDisplay();
                     break;
                 case ("8"):
-                    MostPopulatedWetland();
+                    MostFaunaWetland();
                     break;
                 case ("N"):
                     System.out.println("\n\nGoodbye");
