@@ -289,7 +289,7 @@ public class Dagma{
 	 * @return a boolean that depends on the existance of the specie in the wetland
 	 */
 	public boolean IsSpecieInWetland(int wetlandIndex, int specieIndex){
-		return wetlands[wetlandIndex].isSpecieInHere(species.get(specieIndex));
+		return wetlands[wetlandIndex].IsSpecieInHere(species.get(specieIndex));
 	}
 	/**
 	 * shows every specie that has been registered assingned to an index
@@ -313,7 +313,7 @@ public class Dagma{
 	 */
 	public int FindSpecieIndexDisplay(int index){
 		int counter = 0, counter2 = -1;
-		if(index<=regSpecies&&counter>=1){
+		if(index<=regSpecies&&index>=1){
 			while(counter<index){
 				counter2++;
 				if (species.get(counter2)!=null){

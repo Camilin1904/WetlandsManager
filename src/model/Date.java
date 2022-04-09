@@ -24,6 +24,9 @@ public class Date {
 		month = Integer.parseInt(date.substring(3,5));
 		year = Integer.parseInt(date.substring(6));
 	}
+	public int getYear(){
+		return year;
+	}
 	/**
 	 * Returns the date with the format dd/mm/yyyy
 	 */

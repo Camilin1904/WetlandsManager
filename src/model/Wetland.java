@@ -144,7 +144,7 @@ public class Wetland{
 		int NumMaintenance = 0;
 		for (int counter=0; counter<events.size(); counter++){
 			if(events.get(counter).getType().equals(model.EventType.MAINTENANCE)){
-				if (events.get(counter).getDate().substring(5).equals(year+"")){
+				if (events.get(counter).getYear()==year){
 					NumMaintenance++;
 				}
 			}
@@ -156,7 +156,7 @@ public class Wetland{
 	 * @param specie
 	 * @return a boolean referencin gthe existance of the specie in teh wetland
 	 */
-	public boolean isSpecieInHere(Specie specie){
+	public boolean IsSpecieInHere(Specie specie){
 		boolean check = false;
 		for(int counter=0; counter<speciesFound.size(); counter++){
 			if(specie.equals(speciesFound.get(counter))){

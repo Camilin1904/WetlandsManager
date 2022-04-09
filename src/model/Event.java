@@ -48,5 +48,8 @@ public class Event{
 	public String getDate() {
 		return date.toString();
 	}
+	public int getYear(){
+		return date.getYear();
+	}
 
 }
