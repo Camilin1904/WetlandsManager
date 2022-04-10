@@ -381,24 +381,8 @@ public class WetlandsManager {
      * Dysplays all of the information about both the wetlands and the species
      */
     private void InfoDisplay(){
-        if(dagma.getRegWetlands()>0){
-            for (int counter=0; counter<dagma.getRegWetlands(); counter++){
-                System.out.println("\nWetland " + (counter+1));
-                System.out.println(dagma.PrintAllWetlands(counter));
-            }
-        }
-        else{
-            System.out.println("\nNo wetlands");
-        }
-        if(dagma.getNumSpecies()>0){
-            for (int counter=0; counter<dagma.getNumSpecies(); counter++){
-                System.out.println("\nSpecie " + (counter+1));
-                System.out.println(dagma.PrintAllSpecies(counter));
-            }
-        }
-        else{
-            System.out.println("\nNo species");
-        }
+        System.out.println(dagma.PrintAllWetlands());
+        System.out.println(dagma.PrintAllSpecies());
     }
     /**
      * the menu where the user is asked what to do next

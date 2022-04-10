@@ -207,16 +207,36 @@ public class Dagma{
 	 * @param index
 	 * @return The String with all of the information about the wetland
 	 */
-	public String PrintAllWetlands(int index){
-		return wetlands[index].toString();
+	public String PrintAllWetlands(){
+		String message = "";
+		if(getRegWetlands()>0){
+            for (int counter=0; counter<getRegWetlands(); counter++){
+                message += "\nWetland " + (counter+1);
+                message += wetlands[counter].toString();
+            }
+        }
+        else{
+            message = "\nNo wetlands";
+        }
+		return message;
 	}
 	/**
 	 * Returns a String with all of the information for a given Specie
 	 * @param index
 	 * @return The String with all of the information about the Specie
 	 */
-	public String PrintAllSpecies(int index){
-		return species.get(index).toString();
+	public String PrintAllSpecies(){
+		String message = "";
+		if(getNumSpecies()>0){
+            for (int counter=0; counter<getNumSpecies(); counter++){
+                message += "\nSpecie " + (counter+1);
+                message += species.get(counter).toString();
+            }
+        }
+        else{
+            message = "\nNo species";
+        }
+		return message;
 	}
 	/**
 	 * fetches the number of maintenance a wetland gets per year
